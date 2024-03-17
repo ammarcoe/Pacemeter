@@ -5,137 +5,101 @@ import 'package:pacemeters/Screens/pace_test.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:pacemeters/Screens/welcome_screen.dart';
 
-// Home screen widget
-
 class HomeScreen extends StatelessWidget {
-  const HomeScreen({super.key});
+  const HomeScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Stack(
-        fit: StackFit.expand,
-        children: [
-          // Background image
-          Image.asset(
-            "assets/background_image.jpg",
-            fit: BoxFit.cover,
+      appBar: AppBar(
+        backgroundColor: Colors.black,
+        title: const Text('Pacemeter', ),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.account_circle),
+            onPressed: () {
+              showModalBottomSheet(
+                context: context,
+                builder: (BuildContext context) {
+                  return const UserProfileBottomSheet();
+                },
+              );
+            },
           ),
-          Container(
-            color: Colors.black.withOpacity(0.7),
-          ),
-
-          // Pacemeter text at the top
-          const Positioned(
-            top: 50,
-            left: 16,
-            child: Text(
-              "Pacemeter",
-              style: TextStyle(
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
-                color: Colors.white,
-              ),
+        ],
+      ),
+      body: Container(
+        decoration: const BoxDecoration(
+          // image: DecorationImage(
+          //   image: AssetImage("assets/background_image.jpg"),
+          //   fit: BoxFit.cover,
+          // ),
+        ),
+        child: Container(
+          color: Colors.black.withOpacity(0.7),
+          child: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [],
             ),
           ),
-
-          // User button at the top right
-          Positioned(
-            top: 40,
-            right: 16,
-            child: IconButton(
-              icon: const Icon(
-                Icons.account_circle,
-                color: Colors.white,
-                size: 30,
-              ),
-              // style: ButtonStyle(
-              //   backgroundColor: MaterialStateProperty.all(Colors.red),
-              //   overlayColor: MaterialStateProperty.all(Colors.transparent),
-              // ),
+        ),
+      ),
+      bottomNavigationBar: BottomAppBar(
+        color: Color.fromARGB(255, 7, 7, 7),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            IconButton(
+              icon: Icon(Icons.speed, color: Colors.white,),
               onPressed: () {
-                // Show the user profile bottom sheet
-                showModalBottomSheet(
-                  context: context,
-                  builder: (BuildContext context) {
-                    return const UserProfileBottomSheet();
-                  },
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const PaceTest(),
+                  ),
                 );
               },
             ),
-          ),
+            IconButton(
+                      color: Color.fromARGB(255, 255, 254, 254),
 
-          // Centered buttons
-          Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const SizedBox(
-                  height: 20,
-                ),
-                RoundedButton(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const PaceTest(),
-                      ),
-                    );
-                  },
-                  label: "Pace Test",
-                  icon: Icons.speed,
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                RoundedButton(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const StatisticsScreen(),
-                      ),
-                    );
-                  },
-                  label: "Statistics",
-                  icon: Icons.bar_chart,
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                RoundedButton(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const CricKnow(),
-                      ),
-                    );
-                  },
-                  label: "CricKnow",
-                  icon: Icons.sports_cricket,
-                ),
-              ],
+              icon: Icon(Icons.bar_chart),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const StatisticsScreen(),
+                  ),
+                );
+              },
             ),
-          ),
-        ],
+            IconButton(
+              color: Color.fromARGB(255, 248, 247, 247),
+              
+              icon: Icon(Icons.sports_cricket),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const CricKnow(),
+                  ),
+                );
+              },
+            ),
+          ],
+        ),
       ),
     );
   }
 }
 
 class UserProfileBottomSheet extends StatelessWidget {
-  const UserProfileBottomSheet({super.key});
+  const UserProfileBottomSheet({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    // Get the current user from Firebase Authentication
     User? user = FirebaseAuth.instance.currentUser;
-
-    // Default values if user is not logged in
-
-    // Update values if user is logged in
-    if (user != null) {}
 
     return Container(
       padding: const EdgeInsets.all(16),
@@ -167,15 +131,8 @@ class UserProfileBottomSheet extends StatelessWidget {
           const SizedBox(height: 20),
           ElevatedButton(
             onPressed: () async {
-              // Sign out from Firebase
               await FirebaseAuth.instance.signOut();
-
-              // Close the bottom sheet
-              // ignore: use_build_context_synchronously
               Navigator.pop(context);
-
-              // Navigate to the WelcomeScreen
-              // ignore: use_build_context_synchronously
               Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
