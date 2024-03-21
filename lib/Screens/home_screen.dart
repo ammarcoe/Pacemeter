@@ -11,36 +11,46 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.black,
-        title: const Text('Pacemeter'),
-        titleTextStyle: TextStyle(
-          color: Colors.white
-        ),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.account_circle),
-            onPressed: () {
-              showModalBottomSheet(
-                context: context,
-                builder: (BuildContext context) {
-                  return const UserProfileBottomSheet();
-                },
-              );
-            },
-          ),
-        ],
+  backgroundColor: Colors.grey[900],
+  elevation: 0,
+  foregroundColor: Colors.white,
+  titleSpacing: 0,
+  title: Row(
+    children: [
+      Image.asset(
+        'assets/PM.png',
+        width: 30,
+        height: 30,
       ),
+      const SizedBox(width: 8),
+      const Text('Pacemeter'),
+    ],
+  ),
+  actions: [
+    IconButton(
+      icon: const Icon(Icons.account_circle),
+      onPressed: () {
+        showModalBottomSheet(
+          context: context,
+          builder: (BuildContext context) {
+            return const UserProfileBottomSheet();
+          },
+        );
+      },
+    ),
+  ],
+),
       body: Stack(
         children: [
           Container(
             decoration: BoxDecoration(
-              // image: DecorationImage(
-              //   image: AssetImage("assets/background_image.jpg"),
-              //   fit: BoxFit.cover,
-              // ),
+              image: DecorationImage(
+                image: AssetImage("assets/background_image.jpg"),
+                fit: BoxFit.cover,
+              ),
             ),
             child: Container(
-              color: Colors.black.withOpacity(0.7),
+              color: Colors.black.withOpacity(0.8),
               child: Center(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,

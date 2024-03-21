@@ -2,68 +2,154 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:pacemeters/Screens/home_screen.dart';
 import 'package:pacemeters/widgets/bottom_navigation_bar.dart';
+import 'package:fl_chart/fl_chart.dart';
 
 class StatisticsScreen extends StatelessWidget {
-   StatisticsScreen({super.key});
-     int _selectedIndex = 2;
+  StatisticsScreen({super.key});
+  final _selectedIndex = 2;
 
   @override
   Widget build(BuildContext context) {
     User? user = FirebaseAuth.instance.currentUser;
 
     return Scaffold(
-      bottomNavigationBar: CustomBottomNavigationBar(selectedIndex: _selectedIndex),
+      appBar: AppBar(
+  backgroundColor: Colors.grey[900],
+  elevation: 0,
+  foregroundColor: Colors.white,
+  titleSpacing: 0,
+  title: Row(
+    children: [
+      Image.asset(
+        'assets/PM.png',
+        width: 30,
+        height: 30,
+      ),
+      const SizedBox(width: 8),
+      const Text('Pacemeter'),
+    ],
+  ),
+  actions: [
+    IconButton(
+      icon: const Icon(Icons.account_circle),
+      onPressed: () {
+        showModalBottomSheet(
+          context: context,
+          builder: (BuildContext context) {
+            return const UserProfileBottomSheet();
+          },
+        );
+      },
+    ),
+  ],
+),
+      bottomNavigationBar:
+          CustomBottomNavigationBar(selectedIndex: _selectedIndex),
       backgroundColor: Colors.black,
       body: Stack(
         fit: StackFit.expand,
         alignment: AlignmentDirectional.center,
         children: [
-          Image.asset(
-            "assets/background_image.jpg",
-            fit: BoxFit.cover,
-          ),
           Container(
             color: Colors.black.withOpacity(0.9),
           ),
-          Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                CircleAvatar(
-                  radius: 50,
-                  backgroundImage: user?.photoURL != null
-                      ? NetworkImage(user!.photoURL!)
-                      : const AssetImage("assets/SSA.jpg")
-                          as ImageProvider<Object>?,
-                ),
-                const SizedBox(height: 10),
-                Text(
-                  user?.displayName ?? "",
-                  style: const TextStyle(
-                    color: Colors.white,
-                    fontSize: 22,
-                    fontWeight: FontWeight.bold,
+          SingleChildScrollView(
+            child: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  CircleAvatar(
+                    radius: 50,
+                    backgroundImage: user?.photoURL != null
+                        ? NetworkImage(user!.photoURL!)
+                        : const AssetImage("assets/SSA.jpg")
+                            as ImageProvider<Object>?,
                   ),
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                const Text(
-                  "Your Fastest recorded Paces",
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 22,
+                  const SizedBox(height: 10),
+                  Text(
+                    user?.displayName ?? "",
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 22,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
-                ),
-                const SizedBox(height: 30),
-                SpeedBoxes(),
-                const Expanded(child: TopDeliveries()),
-              ],
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  const Text(
+                    "Your Pace History",
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 22,
+                    ),
+                  ),
+                  const SizedBox(height: 30),
+                  const PaceLineChart(),
+                  const SizedBox(height: 20),
+                  const SpeedBoxes(),
+                  const SizedBox(height: 20),
+                  const TopDeliveries(),
+                ],
+              ),
             ),
           ),
         ],
       ),
+    );
+  }
+}
+
+class PaceLineChart extends StatelessWidget {
+  const PaceLineChart({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    User? user = FirebaseAuth.instance.currentUser;
+
+    return StreamBuilder(
+      stream: FirebaseFirestore.instance
+          .collection('users')
+          .doc(user?.uid)
+          .collection('paces')
+          .orderBy('timestamp', descending: true)
+          .snapshots(),
+      builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+        if (snapshot.hasData) {
+          var paces = snapshot.data!.docs;
+          List<FlSpot> paceData = [];
+
+          for (var i = 0; i < paces.length; i++) {
+            var paceDoc = paces[i];
+            var paceDataMap = paceDoc.data() as Map<String, dynamic>;
+            paceData.add(FlSpot(i.toDouble(), paceDataMap["pace"]));
+          }
+
+          return AspectRatio(
+            aspectRatio: 1.7,
+            child: LineChart(
+              LineChartData(
+                lineBarsData: [
+                  LineChartBarData(
+                    spots: paceData,
+                    isCurved: true,
+                    color: Colors.white,
+                    barWidth: 3,
+                    isStrokeCapRound: true,
+                    dotData: FlDotData(
+                      show: false,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          );
+        } else {
+          return const CircularProgressIndicator();
+        }
+      },
     );
   }
 }
@@ -165,6 +251,8 @@ class TopDeliveries extends StatelessWidget {
           return Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20),
             child: ListView(
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
               children: paces.map((paceDoc) {
                 var paceData = paceDoc.data() as Map<String, dynamic>;
 

@@ -10,26 +10,36 @@ class PaceTest extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.black,
-        title: const Text(
-          'Pacemeter',
-          style: TextStyle(color: Colors.white),
-        ),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.account_circle),
-            onPressed: () {
-              showModalBottomSheet(
-                context: context,
-                builder: (BuildContext context) {
-                  return const UserProfileBottomSheet();
-                },
-              );
-            },
-          ),
-        ],
+     appBar: AppBar(
+  backgroundColor: Colors.grey[900],
+  elevation: 0,
+  foregroundColor: Colors.white,
+  titleSpacing: 0,
+  title: Row(
+    children: [
+      Image.asset(
+        'assets/PM.png',
+        width: 30,
+        height: 30,
       ),
+      const SizedBox(width: 8),
+      const Text('Pacemeter'),
+    ],
+  ),
+  actions: [
+    IconButton(
+      icon: const Icon(Icons.account_circle),
+      onPressed: () {
+        showModalBottomSheet(
+          context: context,
+          builder: (BuildContext context) {
+            return const UserProfileBottomSheet();
+          },
+        );
+      },
+    ),
+  ],
+),
       body: Stack(
         fit: StackFit.expand,
         children: [
@@ -39,7 +49,7 @@ class PaceTest extends StatelessWidget {
             fit: BoxFit.cover,
           ),
           Container(
-            color: Colors.black.withOpacity(0.7), // Adjust opacity here
+            color: Colors.black.withOpacity(0.8), // Adjust opacity here
           ),
 
           // Centered buttons
