@@ -1,12 +1,35 @@
 import 'package:flutter/material.dart';
+import 'package:pacemeters/Screens/home_screen.dart';
 import 'package:pacemeters/Screens/manual.dart';
+import 'package:pacemeters/widgets/bottom_navigation_bar.dart';
 
 class PaceTest extends StatelessWidget {
-  const PaceTest({super.key});
+  const PaceTest({Key? key}) : super(key: key);
+  final int _selectedIndex = 1;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.black,
+        title: const Text(
+          'Pacemeter',
+          style: TextStyle(color: Colors.white),
+        ),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.account_circle),
+            onPressed: () {
+              showModalBottomSheet(
+                context: context,
+                builder: (BuildContext context) {
+                  return const UserProfileBottomSheet();
+                },
+              );
+            },
+          ),
+        ],
+      ),
       body: Stack(
         fit: StackFit.expand,
         children: [
@@ -19,46 +42,15 @@ class PaceTest extends StatelessWidget {
             color: Colors.black.withOpacity(0.7), // Adjust opacity here
           ),
 
-          // Pacemeter text at the top
-          const Positioned(
-            top: 50,
-            left: 16,
-            child: Text(
-              "Pacemeter",
-              style: TextStyle(
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
-                color: Colors.white,
-              ),
-            ),
-          ),
-
-          // User button at the top right
-          Positioned(
-            top: 40,
-            right: 16,
-            child: IconButton(
-              icon: const Icon(
-                Icons.account_circle,
-                color: Colors.white,
-                size: 30,
-              ),
-              onPressed: () {
-                // Handle user button press
-              },
-            ),
-          ),
-
           // Centered buttons
-          Center(
+          Positioned(
+            top: MediaQuery.of(context).size.height / 2 - 100,
+            left: 0,
+            right: 0,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const SizedBox(
-                  height: 20,
-                  width: 20,
-                ),
-                RoundedButton(
+                Material3Button(
                   onPressed: () {
                     Navigator.pushReplacement(
                       context,
@@ -73,9 +65,8 @@ class PaceTest extends StatelessWidget {
                 ),
                 const SizedBox(
                   height: 20,
-                  width: 22,
                 ),
-                RoundedButton(
+                Material3Button(
                   onPressed: () {
                     // Show dialog for AI SpeedTest
                     showDialog(
@@ -99,12 +90,16 @@ class PaceTest extends StatelessWidget {
                   label: "AI SpeedTest",
                   icon: Icons.sports_baseball,
                 ),
-                const SizedBox(
-                  height: 20,
-                  width: 22,
-                ),
               ],
             ),
+          ),
+
+          // Bottom navigation bar
+          Positioned(
+            left: 0,
+            right: 0,
+            bottom: 0,
+            child: CustomBottomNavigationBar(selectedIndex: _selectedIndex,),
           ),
         ],
       ),
@@ -112,38 +107,45 @@ class PaceTest extends StatelessWidget {
   }
 }
 
-class RoundedButton extends StatelessWidget {
-  final VoidCallback? onPressed;
+class Material3Button extends StatelessWidget {
+  final VoidCallback onPressed;
   final String label;
   final IconData icon;
 
-  const RoundedButton({
-    Key? key,
-    this.onPressed,
+  const Material3Button({
+    required this.onPressed,
     required this.label,
     required this.icon,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
-    return ElevatedButton(
-      onPressed: onPressed,
-      style: ButtonStyle(
-          foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
-          backgroundColor: MaterialStateProperty.all<Color>(Colors.red),
-          shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-              RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(15.0)))),
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
+    return SizedBox(
+      width: MediaQuery.of(context).size.width * 0.4,
+      height: 80,
+      child: FilledButton.tonal(
+        onPressed: onPressed,
+        style: const ButtonStyle(
+          backgroundColor: MaterialStatePropertyAll<Color>(Color.fromARGB(255, 252, 44, 29)),
+          foregroundColor: MaterialStatePropertyAll<Color>(Colors.white),
+          elevation: MaterialStatePropertyAll<double>(5),
+          shape: MaterialStatePropertyAll<RoundedRectangleBorder>(
+            RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(Radius.circular(20)),
+            ),
+          ),
+        ),
         child: Column(
-          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(icon, size: 40),
-            const SizedBox(height: 10),
+            Icon(
+              icon,
+              size: 40,
+            ),
+            const SizedBox(height: 5),
             Text(
               label,
-              style: const TextStyle(fontSize: 16),
+              style: const TextStyle(fontSize: 18),
             ),
           ],
         ),

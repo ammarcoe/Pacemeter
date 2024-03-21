@@ -1,18 +1,38 @@
 import 'package:flutter/material.dart';
+import 'package:pacemeters/Screens/pace_test.dart';
+import 'package:pacemeters/Screens/stats.dart';
+import 'package:pacemeters/widgets/bottom_navigation_bar.dart';
+import 'home_screen.dart';
+
 
 class CricKnow extends StatelessWidget {
-  const CricKnow({super.key});
+   CricKnow({super.key});
+   int _selectedIndex = 3;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+       bottomNavigationBar: CustomBottomNavigationBar(selectedIndex:  _selectedIndex ),
       backgroundColor: Colors.black,
       appBar: AppBar(
-        title: const Text(
-          'CricKnow',
-          style: TextStyle(color: Colors.white),
-        ),
         backgroundColor: Colors.black,
+        title: const Text('Pacemeter'),
+        titleTextStyle: TextStyle(
+          color: Colors.white
+        ),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.account_circle),
+            onPressed: () {
+              showModalBottomSheet(
+                context: context,
+                builder: (BuildContext context) {
+                  return const UserProfileBottomSheet();
+                },
+              );
+            },
+          ),
+        ],
       ),
       body: Center(
         child: Column(

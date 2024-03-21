@@ -2,15 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:pacemeters/widgets/bottom_navigation_bar.dart';
 
 class StatisticsScreen extends StatelessWidget {
-  const StatisticsScreen({super.key});
+   StatisticsScreen({super.key});
+     int _selectedIndex = 2;
 
   @override
   Widget build(BuildContext context) {
     User? user = FirebaseAuth.instance.currentUser;
 
     return Scaffold(
+      bottomNavigationBar: CustomBottomNavigationBar(selectedIndex: _selectedIndex),
       backgroundColor: Colors.black,
       body: Stack(
         fit: StackFit.expand,

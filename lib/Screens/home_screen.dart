@@ -1,19 +1,21 @@
 import 'package:flutter/material.dart';
-import 'package:pacemeters/Screens/cric_know.dart';
-import 'package:pacemeters/Screens/stats.dart';
-import 'package:pacemeters/Screens/pace_test.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:pacemeters/Screens/welcome_screen.dart';
+import 'package:pacemeters/widgets/bottom_navigation_bar.dart';
 
 class HomeScreen extends StatelessWidget {
-  const HomeScreen({Key? key}) : super(key: key);
+   HomeScreen({Key? key}) : super(key: key);
+   int _selectedIndex = 0;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.black,
-        title: const Text('Pacemeter', ),
+        title: const Text('Pacemeter'),
+        titleTextStyle: TextStyle(
+          color: Colors.white
+        ),
         actions: [
           IconButton(
             icon: const Icon(Icons.account_circle),
@@ -28,67 +30,32 @@ class HomeScreen extends StatelessWidget {
           ),
         ],
       ),
-      body: Container(
-        decoration: const BoxDecoration(
-          // image: DecorationImage(
-          //   image: AssetImage("assets/background_image.jpg"),
-          //   fit: BoxFit.cover,
-          // ),
-        ),
-        child: Container(
-          color: Colors.black.withOpacity(0.7),
-          child: Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [],
+      body: Stack(
+        children: [
+          Container(
+            decoration: BoxDecoration(
+              // image: DecorationImage(
+              //   image: AssetImage("assets/background_image.jpg"),
+              //   fit: BoxFit.cover,
+              // ),
+            ),
+            child: Container(
+              color: Colors.black.withOpacity(0.7),
+              child: Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [],
+                ),
+              ),
             ),
           ),
-        ),
-      ),
-      bottomNavigationBar: BottomAppBar(
-        color: Color.fromARGB(255, 7, 7, 7),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            IconButton(
-              icon: Icon(Icons.speed, color: Colors.white,),
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const PaceTest(),
-                  ),
-                );
-              },
-            ),
-            IconButton(
-                      color: Color.fromARGB(255, 255, 254, 254),
-
-              icon: Icon(Icons.bar_chart),
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const StatisticsScreen(),
-                  ),
-                );
-              },
-            ),
-            IconButton(
-              color: Color.fromARGB(255, 248, 247, 247),
-              
-              icon: Icon(Icons.sports_cricket),
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const CricKnow(),
-                  ),
-                );
-              },
-            ),
-          ],
-        ),
+          Positioned(
+            left: 0,
+            right: 0,
+            bottom: 0,
+            child: CustomBottomNavigationBar(selectedIndex:   _selectedIndex ),
+          ),
+        ],
       ),
     );
   }
