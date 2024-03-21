@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:pacemeters/Screens/home_screen.dart';
 import 'package:pacemeters/Screens/manual.dart';
 import 'package:pacemeters/widgets/bottom_navigation_bar.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class PaceTest extends StatelessWidget {
   const PaceTest({Key? key}) : super(key: key);
@@ -10,36 +11,39 @@ class PaceTest extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-     appBar: AppBar(
-  backgroundColor: Colors.grey[900],
-  elevation: 0,
-  foregroundColor: Colors.white,
-  titleSpacing: 0,
-  title: Row(
-    children: [
-      Image.asset(
-        'assets/PM.png',
-        width: 30,
-        height: 30,
+      appBar: AppBar(
+        backgroundColor: Colors.grey[900],
+        elevation: 0,
+        foregroundColor: Colors.white,
+        titleSpacing: 0,
+        title: Row(
+          children: [
+            Image.asset(
+              'assets/PM.png',
+              width: 30,
+              height: 30,
+            ),
+            const SizedBox(width: 8),
+            Text(
+              'Pacemeter',
+              style: GoogleFonts.spaceGrotesk(), // Apply Space Grotesk
+            ),
+          ],
+        ),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.account_circle),
+            onPressed: () {
+              showModalBottomSheet(
+                context: context,
+                builder: (BuildContext context) {
+                  return const UserProfileBottomSheet();
+                },
+              );
+            },
+          ),
+        ],
       ),
-      const SizedBox(width: 8),
-      const Text('Pacemeter'),
-    ],
-  ),
-  actions: [
-    IconButton(
-      icon: const Icon(Icons.account_circle),
-      onPressed: () {
-        showModalBottomSheet(
-          context: context,
-          builder: (BuildContext context) {
-            return const UserProfileBottomSheet();
-          },
-        );
-      },
-    ),
-  ],
-),
       body: Stack(
         fit: StackFit.expand,
         children: [
@@ -154,8 +158,12 @@ class Material3Button extends StatelessWidget {
             ),
             const SizedBox(height: 5),
             Text(
+              
               label,
-              style: const TextStyle(fontSize: 18),
+              style: GoogleFonts.spaceGrotesk( // Apply Space Grotesk 
+                fontSize: 18,
+              ),
+            
             ),
           ],
         ),

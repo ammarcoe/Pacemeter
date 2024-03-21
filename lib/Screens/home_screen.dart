@@ -4,42 +4,48 @@ import 'package:pacemeters/Screens/welcome_screen.dart';
 import 'package:pacemeters/widgets/bottom_navigation_bar.dart';
 
 class HomeScreen extends StatelessWidget {
-   HomeScreen({Key? key}) : super(key: key);
-   int _selectedIndex = 0;
+  HomeScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final _selectedIndex = 0;
+
     return Scaffold(
       appBar: AppBar(
-  backgroundColor: Colors.grey[900],
-  elevation: 0,
-  foregroundColor: Colors.white,
-  titleSpacing: 0,
-  title: Row(
-    children: [
-      Image.asset(
-        'assets/PM.png',
-        width: 30,
-        height: 30,
+        backgroundColor: Colors.grey[900],
+        elevation: 0,
+        foregroundColor: Colors.white,
+        titleSpacing: 0,
+        title: Row(
+          children: [
+            Image.asset(
+              'assets/PM.png',
+              width: 30,
+              height: 30,
+            ),
+            const SizedBox(width: 8),
+            const Text(
+              'Pacemeter',
+              style: TextStyle(
+                fontFamily: 'SpaceGrotesk',
+              ),
+            ),
+          ],
+        ),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.account_circle),
+            onPressed: () {
+              showModalBottomSheet(
+                context: context,
+                builder: (BuildContext context) {
+                  return const UserProfileBottomSheet();
+                },
+              );
+            },
+          ),
+        ],
       ),
-      const SizedBox(width: 8),
-      const Text('Pacemeter'),
-    ],
-  ),
-  actions: [
-    IconButton(
-      icon: const Icon(Icons.account_circle),
-      onPressed: () {
-        showModalBottomSheet(
-          context: context,
-          builder: (BuildContext context) {
-            return const UserProfileBottomSheet();
-          },
-        );
-      },
-    ),
-  ],
-),
       body: Stack(
         children: [
           Container(
@@ -63,7 +69,7 @@ class HomeScreen extends StatelessWidget {
             left: 0,
             right: 0,
             bottom: 0,
-            child: CustomBottomNavigationBar(selectedIndex:   _selectedIndex ),
+            child: CustomBottomNavigationBar(selectedIndex: _selectedIndex),
           ),
         ],
       ),
@@ -103,6 +109,7 @@ class UserProfileBottomSheet extends StatelessWidget {
               fontSize: 18,
               color: Colors.white,
               fontWeight: FontWeight.bold,
+              fontFamily: 'SpaceGrotesk',
             ),
           ),
           const SizedBox(height: 20),
@@ -117,7 +124,12 @@ class UserProfileBottomSheet extends StatelessWidget {
                 ),
               );
             },
-            child: const Text("Sign Out"),
+            child: const Text(
+              "Sign Out",
+              style: TextStyle(
+                fontFamily: 'SpaceGrotesk',
+              ),
+            ),
           ),
         ],
       ),
