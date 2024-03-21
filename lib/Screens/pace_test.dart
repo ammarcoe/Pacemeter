@@ -58,11 +58,11 @@ class PaceTest extends StatelessWidget {
 
           // Centered buttons
           Positioned(
-            top: MediaQuery.of(context).size.height / 2 - 100,
+            top: MediaQuery.of(context).size.height / 2.5 - 100,
             left: 0,
             right: 0,
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 Material3Button(
                   onPressed: () {

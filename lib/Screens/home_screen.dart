@@ -1,14 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:pacemeters/Screens/welcome_screen.dart';
 import 'package:pacemeters/widgets/bottom_navigation_bar.dart';
+import 'package:carousel_slider/carousel_slider.dart';
+import 'package:pacemeters/Screens/pace_test.dart';
 
 class HomeScreen extends StatelessWidget {
   HomeScreen({Key? key}) : super(key: key);
 
+  final List<String> imageUrls = [
+    'https://images.hindustantimes.com/img/2022/05/20/1600x900/image_-_2022-05-20T175125.385_1653049289821_1653049294581.jpg',
+    'https://images.hindustantimes.com/img/2022/09/03/1600x900/CRICKET-AUS-ZIM-16_1662185254028_1662185254028_1662185398002_1662185398002.jpg',
+    'https://images.hindustantimes.com/rf/image_size_960x540/HT/p2/2020/08/14/Pictures/_8461ac18-dde5-11ea-a97c-4447400c36de.jpg'
+  ];
+
   @override
   Widget build(BuildContext context) {
     final _selectedIndex = 0;
+    User? user = FirebaseAuth.instance.currentUser;
 
     return Scaffold(
       appBar: AppBar(
@@ -24,11 +34,9 @@ class HomeScreen extends StatelessWidget {
               height: 30,
             ),
             const SizedBox(width: 8),
-            const Text(
+            Text(
               'Pacemeter',
-              style: TextStyle(
-                fontFamily: 'SpaceGrotesk',
-              ),
+              style: GoogleFonts.spaceGrotesk(),
             ),
           ],
         ),
@@ -57,11 +65,87 @@ class HomeScreen extends StatelessWidget {
             ),
             child: Container(
               color: Colors.black.withOpacity(0.8),
-              child: Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [],
-                ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
+                    child: Text(
+                      'Welcome ${user?.displayName ?? "Guest User"}',
+                      style: GoogleFonts.spaceGrotesk(
+                        fontSize: 24,
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                  CarouselSlider.builder(
+                    itemCount: imageUrls.length,
+                    options: CarouselOptions(
+                      height: 230,
+                      autoPlay: true,
+                      autoPlayInterval: Duration(seconds: 3),
+                      autoPlayAnimationDuration: Duration(milliseconds: 800),
+                      autoPlayCurve: Curves.fastOutSlowIn,
+                      enlargeCenterPage: true,
+                      enlargeStrategy: CenterPageEnlargeStrategy.height,
+                      viewportFraction: 0.9,
+                    ),
+                    itemBuilder: (context, index, realIndex) {
+                      final imageUrl = imageUrls[index];
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 4.0),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(20),
+                          child: Image.network(
+                            imageUrl,
+                            fit: BoxFit.cover,
+                            width: double.infinity,
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                  const SizedBox(height: 30),
+                  Center(
+                    child: Column(
+                      children: [
+                        Text(
+                          'Calculate your Pace here',
+                          style: GoogleFonts.spaceGrotesk(
+                            fontSize: 18,
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        const SizedBox(height: 10),
+                        ElevatedButton(
+                          
+                          style: ButtonStyle(
+                            
+                            foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
+          backgroundColor: MaterialStateProperty.all<Color>(Colors.red),
+          shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+              RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(25.0)))
+                          ),
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => PaceTest(),
+                              ),
+                            );
+                          },
+                          child: Text(
+                            'PaceTest',
+                            style: GoogleFonts.spaceGrotesk(),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
               ),
             ),
           ),
@@ -76,6 +160,7 @@ class HomeScreen extends StatelessWidget {
     );
   }
 }
+
 
 class UserProfileBottomSheet extends StatelessWidget {
   const UserProfileBottomSheet({Key? key}) : super(key: key);
@@ -105,12 +190,15 @@ class UserProfileBottomSheet extends StatelessWidget {
           const SizedBox(height: 10),
           Text(
             user?.displayName ?? "Guest User",
-            style: const TextStyle(
+            style: GoogleFonts.spaceGrotesk(
+
               fontSize: 18,
               color: Colors.white,
               fontWeight: FontWeight.bold,
-              fontFamily: 'SpaceGrotesk',
-            ),
+            ) 
+              
+              
+            
           ),
           const SizedBox(height: 20),
           ElevatedButton(
@@ -124,11 +212,9 @@ class UserProfileBottomSheet extends StatelessWidget {
                 ),
               );
             },
-            child: const Text(
+            child: Text(
               "Sign Out",
-              style: TextStyle(
-                fontFamily: 'SpaceGrotesk',
-              ),
+              style: GoogleFonts.spaceGrotesk(),
             ),
           ),
         ],

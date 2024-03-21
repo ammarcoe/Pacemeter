@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:pacemeters/Screens/pace_test.dart';
 import 'package:pacemeters/Screens/stats.dart';
 import 'package:pacemeters/widgets/bottom_navigation_bar.dart';
@@ -26,7 +27,7 @@ class CricKnow extends StatelessWidget {
               height: 30,
             ),
             const SizedBox(width: 8),
-            const Text('Pacemeter'),
+             Text('Pacemeter', style: GoogleFonts.spaceGrotesk(),),
           ],
         ),
         actions: [
@@ -117,11 +118,8 @@ class CardWidget extends StatelessWidget {
               padding: const EdgeInsets.all(8.0),
               child: Text(
                 title,
-                style: const TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white,
-                ),
+                style: GoogleFonts.spaceGrotesk(fontSize: 18,
+                  color: Colors.white,),
                 textAlign: TextAlign.center,
               ),
             ),

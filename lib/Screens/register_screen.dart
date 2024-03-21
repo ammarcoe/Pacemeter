@@ -1,5 +1,6 @@
 // import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:pacemeters/Screens/home_screen.dart';
 // import 'package:pacemeters/widgets/custom_buttons.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -67,6 +68,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
           // Add some spacing between text and button
           CustomButton(
             text: "Sign In with Google",
+            style:GoogleFonts.spaceGrotesk(),
             onPressed: handleGoogleSignIn,
           ),
         ],

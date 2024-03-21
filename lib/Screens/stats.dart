@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -28,7 +29,8 @@ class StatisticsScreen extends StatelessWidget {
         height: 30,
       ),
       const SizedBox(width: 8),
-      const Text('Pacemeter'),
+       Text('Pacemeter',
+      style: GoogleFonts.spaceGrotesk(),),
     ],
   ),
   actions: [
@@ -70,21 +72,19 @@ class StatisticsScreen extends StatelessWidget {
                   const SizedBox(height: 10),
                   Text(
                     user?.displayName ?? "",
-                    style: const TextStyle(
-                      color: Colors.white,
+                    style:  GoogleFonts.spaceGrotesk( color: Colors.white,
                       fontSize: 22,
-                      fontWeight: FontWeight.bold,
-                    ),
+                      fontWeight: FontWeight.bold,)
                   ),
                   const SizedBox(
                     height: 20,
                   ),
-                  const Text(
+                   Text(
                     "Your Pace History",
-                    style: TextStyle(
-                      color: Colors.white,
+                    style: GoogleFonts.spaceGrotesk(
+                       color: Colors.white,
                       fontSize: 22,
-                    ),
+                    )
                   ),
                   const SizedBox(height: 30),
                   const PaceLineChart(),
@@ -110,47 +110,83 @@ class PaceLineChart extends StatelessWidget {
     User? user = FirebaseAuth.instance.currentUser;
 
     return StreamBuilder(
-      stream: FirebaseFirestore.instance
-          .collection('users')
-          .doc(user?.uid)
-          .collection('paces')
-          .orderBy('timestamp', descending: true)
-          .snapshots(),
-      builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
-        if (snapshot.hasData) {
-          var paces = snapshot.data!.docs;
-          List<FlSpot> paceData = [];
-
-          for (var i = 0; i < paces.length; i++) {
-            var paceDoc = paces[i];
-            var paceDataMap = paceDoc.data() as Map<String, dynamic>;
-            paceData.add(FlSpot(i.toDouble(), paceDataMap["pace"]));
-          }
-
-          return AspectRatio(
-            aspectRatio: 1.7,
-            child: LineChart(
-              LineChartData(
-                lineBarsData: [
-                  LineChartBarData(
-                    spots: paceData,
-                    isCurved: true,
-                    color: Colors.white,
-                    barWidth: 3,
-                    isStrokeCapRound: true,
-                    dotData: FlDotData(
-                      show: false,
-                    ),
-                  ),
-                ],
+  stream: FirebaseFirestore.instance
+      .collection('users')
+      .doc(user?.uid)
+      .collection('paces')
+      .orderBy('timestamp', descending: true)
+      .snapshots(),
+  builder: (context, AsyncSnapshot snapshot) {
+    if (snapshot.hasData) {
+      var paces = snapshot.data!.docs;
+      List<FlSpot> paceData = [];
+      for (var i = 0; i < paces.length; i++) {
+        var paceDoc = paces[i];
+        var paceDataMap = paceDoc.data() as Map;
+        paceData.add(FlSpot(i.toDouble(), paceDataMap["pace"]));
+      }
+      return AspectRatio(
+        aspectRatio: 1.8,
+        child: LineChart(
+          LineChartData(
+            lineBarsData: [
+              LineChartBarData(
+                spots: paceData,
+                isCurved: true,
+                color: Colors.red,
+                barWidth: 2,
+                isStrokeCapRound: false,
+                dotData: FlDotData(
+                  show: false,
+                ),
+              ),
+            ],
+            lineTouchData: LineTouchData(
+              enabled: true,
+              touchTooltipData: LineTouchTooltipData(
+                tooltipBgColor: Colors.black,
+                tooltipRoundedRadius: 2,
               ),
             ),
-          );
-        } else {
-          return const CircularProgressIndicator();
-        }
-      },
-    );
+            titlesData: FlTitlesData(
+              show: true,
+              topTitles: AxisTitles(
+                sideTitles: SideTitles(
+                  showTitles: true,
+                  getTitlesWidget: (value, meta) {
+                    return Text(
+                      value.toStringAsFixed(2),
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 9,
+                      ),
+                    );
+                  },
+                ),
+              ),
+              leftTitles: AxisTitles(
+                sideTitles: SideTitles(
+                  showTitles: true,
+                  getTitlesWidget: (value, meta) {
+                    return Text(
+                      value.toStringAsFixed(0),
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 9,
+                      ),
+                    );
+                  },
+                ),
+              ),
+            ),
+          ),
+        ),
+      );
+    } else {
+      return const CircularProgressIndicator();
+    }
+  },
+);
   }
 }
 
@@ -189,7 +225,7 @@ class SpeedBoxes extends StatelessWidget {
           return Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              _buildSpeedBox("Average Speed", averageSpeed),
+              _buildSpeedBox("Average Speed" , averageSpeed),
               _buildSpeedBox("Highest Speed", highestSpeed),
             ],
           );
@@ -219,10 +255,8 @@ class SpeedBoxes extends StatelessWidget {
           const SizedBox(height: 10),
           Text(
             "${speed.toStringAsFixed(1)} km/hr",
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 20,
-            ),
+            style: GoogleFonts.spaceGrotesk(color: Colors.white,
+              fontSize: 20,)
           ),
         ],
       ),
@@ -277,10 +311,8 @@ class TopDeliveries extends StatelessWidget {
                       Text(
                         DateFormat('MMM d, y')
                             .format(paceData["timestamp"].toDate()),
-                        style: TextStyle(
-                          color: Colors.grey[500],
-                          fontSize: 16,
-                        ),
+                        style: GoogleFonts.spaceGrotesk(color: Colors.grey[500],
+                          fontSize: 16,)
                       ),
                     ],
                   ),

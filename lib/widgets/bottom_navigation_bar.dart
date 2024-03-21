@@ -12,22 +12,25 @@ class CustomBottomNavigationBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return NavigationBar(
-      backgroundColor: Colors.grey[900], // Dark grey background color
+      backgroundColor: Colors.grey[900],
+      
+       // Dark grey background color
       destinations: [
         NavigationDestination(
-          icon: const Icon(Icons.home),
-          label: 'Home',
+          icon: const Icon(Icons.home, color: Colors.red,),
+          label: 'Home,',
+          
         ),
         NavigationDestination(
-          icon: const Icon(Icons.speed),
+          icon: const Icon(Icons.speed, color: Colors.red),
           label: 'Pace Test',
         ),
         NavigationDestination(
-          icon: const Icon(Icons.bar_chart),
+          icon: const Icon(Icons.bar_chart,color: Colors.red),
           label: 'Stats',
         ),
         NavigationDestination(
-          icon: const Icon(Icons.sports_cricket),
+          icon: const Icon(Icons.sports_cricket,color: Colors.red),
           label: 'Cric Know'
         ),
       ],

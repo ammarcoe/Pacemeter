@@ -21,7 +21,8 @@ class _VideoPlayerWidgetState extends State<VideoPlayerWidget> {
   late ChewieController _chewieController;
   Duration _releasePoint = Duration.zero;
   Duration _impactPoint = Duration.zero;
-  double pitchSize = 17.5; // Default pitch size
+  double pitchSize = 17.5; 
+  double? _storedPace;// Default pitch size
 
   @override
   void initState() {

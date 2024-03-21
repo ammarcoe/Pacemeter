@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:pacemeters/widgets/custom_buttons.dart';
 import 'package:pacemeters/Screens/register_screen.dart';
 
@@ -59,7 +60,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                         ),
                       );
                     },
-                    text: 'Get Started',
+                    text: 'Get Started', style: GoogleFonts.spaceGrotesk(),
                   ),
                 )
               ],
